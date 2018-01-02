@@ -13,10 +13,10 @@ fi
 
 folder () { 
 
-	read -p "Input foldername where to create the files: " answer 
+	read -p "Input foldername where to create the files: " answer
+	echo "$answer"
 	mkdir $answer
 	cd $answer
-	echo $answer
 
 }
 
@@ -196,6 +196,30 @@ hugepages () {
 
 }
 
+runme () { 
+
+	while true 
+	do 
+	  # (1) prompt user, and read command line argument 
+	  read -p "Would you like to setup your pool mining script? Yes/No [yY/nN] " answer 
+	 
+	  # (2) handle the input we were given 
+	  case $answer in 
+	   [yY]* )  
+			poolcreds $path > RunMe
+			chmod +x RunMe
+		  break;;
+		   
+	   [nN]* )
+		  break;; 
+		   
+	  * )   echo "Yes/No [yY/nN]";;
+		 
+	  esac 
+	done 
+
+}
+
 poolcreds () { 
 	
 			read -p "poolurl: " poolurl
@@ -215,24 +239,21 @@ case $type in
 		gccinstall
 		path=$(compilex86_64)
 		hugepages
-		poolcreds $path > RunMe
-		chmod +x RunMe
+		runme
 		echo "Finished installation. Use ./$dir/RunMe to start mining"
 		exit 0;;
        
    [armv71]* )
 		dir=$(folder)
 		path=$(compilearmv71)
-		poolcreds $path > RunMe
-		chmod +x RunMe
+		runme
 		echo "Finished installation. Use ./$dir/RunMe to start mining"
 		exit 0;;
 	  
    [aarch64]* )
 		dir=$(folder)
 		path=$(compileaarch64)
-		poolcreds $path > RunMe
-		chmod +x RunMe
+		runme
 		echo "Finished installation. Use ./$dir/RunMe to start mining"
 		exit 0;;
 		
