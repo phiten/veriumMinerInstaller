@@ -16,6 +16,7 @@ folder () {
 	read -p "Input foldername where to create the files: " answer 
 	mkdir $answer
 	cd $answer
+	echo $answer
 
 }
 
@@ -210,29 +211,29 @@ type=$(lscpu | grep -m 1 "Architecture:" | sed 's/[^=:]*[=:] //' | sed 's|[/ ]||
 
 case $type in 
    [x86_64]* ) 
-		folder
+		dir=$(folder)
 		gccinstall
 		path=$(compilex86_64)
 		hugepages
 		poolcreds $path > RunMe
 		chmod +x RunMe
-		echo "Finished installation. Use ./RunMe to start mining"
+		echo "Finished installation. Use ./$dir/RunMe to start mining"
 		exit 0;;
        
    [armv71]* )
-		folder
+		dir=$(folder)
 		path=$(compilearmv71)
 		poolcreds $path > RunMe
 		chmod +x RunMe
-		echo "Finished installation. Use ./RunMe to start mining"
+		echo "Finished installation. Use ./$dir/RunMe to start mining"
 		exit 0;;
 	  
    [aarch64]* )
-		folder
+		dir=$(folder)
 		path=$(compileaarch64)
 		poolcreds $path > RunMe
 		chmod +x RunMe
-		echo "Finished installation. Use ./RunMe to start mining"
+		echo "Finished installation. Use ./$dir/RunMe to start mining"
 		exit 0;;
 		
   * )   echo "Your CPU Architecture is not supported. Sorry"
