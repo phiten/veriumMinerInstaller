@@ -1,5 +1,11 @@
 #!/bin/bash
 
+#Philipp "3D" ten Brink
+#2018-01-02
+#donations: VRM/VRC VJniF5bP9Acy7ce33yR4jRYSQ66Z4vGH8s
+
+#GNU General Public License v3.0 see LICENSE
+
 if [ "$(id -u)" != "0" ]; then
 	echo "Sorry, you are not root or sudo."
 	exit 1
