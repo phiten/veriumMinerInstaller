@@ -11,95 +11,219 @@ if [ "$(id -u)" != "0" ]; then
 	exit 1
 fi
 
-while true 
-do 
-  # (1) prompt user, and read command line argument 
-  read -p "Download and compile newest GCC version(takes very long)? Yes/No [yY/nN] " answer 
- 
-  # (2) handle the input we were given 
-  case $answer in 
-   [yY]* )  apt-get -y -qq update
-			apt-get -y -qq upgrade
-			apt-get -y -qq install unzip flex make automake autoconf pkg-config
-			wget https://github.com/gcc-mirror/gcc/archive/gcc-7_2_0-release.zip
-			unzip gcc-7_2_0-release.zip
-			cd gcc-gcc-7_2_0-release
-			./contrib/download_prerequisites
-			mkdir build && cd build
-			../configure --enable-languages=c,c++ --disable-multilib
-			make -j 8
-			make install
-	  break;;
+gccinstall () { 
+   
+	while true 
+	do 
+	  # (1) prompt user, and read command line argument 
+	  read -p "Download and compile newest GCC version(takes very long)? Yes/No [yY/nN] " answer 
+	 
+	  # (2) handle the input we were given 
+	  case $answer in 
+	   [yY]* )  apt-get -y -qq update
+				apt-get -y -qq upgrade
+				apt-get -y -qq install unzip flex make automake autoconf pkg-config
+				wget https://github.com/gcc-mirror/gcc/archive/gcc-7_2_0-release.zip
+				unzip gcc-7_2_0-release.zip
+				cd gcc-gcc-7_2_0-release
+				./contrib/download_prerequisites
+				mkdir build && cd build
+				../configure --enable-languages=c,c++ --disable-multilib
+				make -j 8
+				make install
+		  break;;
+		   
+	   [nN]* )
+		  break;; 
+		   
+	  * )    echo "Yes/No [yY/nN]";;
+		 
+	  esac 
+	done 
+
+}
+
+compilex86_64 () { 
+	
+	while true 
+	do 
+	  # (1) prompt user, and read command line argument 
+	  read -p "Download and compile newest miner version(takes longer)? Yes/No [yY/nN] " answer 
+	 
+	  # (2) handle the input we were given 
+	  case $answer in 
+	   [yY]* )  DEBIAN_FRONTEND=noninteractive apt-get -y -qq update
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq upgrade
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq install make git automake autoconf pkg-config libcurl4-openssl-dev libjansson-dev libssl-dev libgmp-dev zlib1g-dev
+				git clone https://github.com/fireworm71/veriumMiner > /dev/null 2>&1
+				cd veriumMiner
+				./build.sh > /dev/null 2>&1
+				make > /dev/null 2>&1
+				echo "./veriumMiner/cpuminer"
+		  break;;
+		   
+	   [nN]* )	DEBIAN_FRONTEND=noninteractive apt-get -y -qq update
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq upgrade
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq install libcurl4-openssl-dev libjansson-dev unzip
+				DEBIAN_FRONTEND=noninteractive wget https://github.com/fireworm71/veriumMiner/releases/download/v1.4/cpuminer_1.4_linux_x64_O2_GCC7.zip > /dev/null 2>&1
+				unzip cpuminer_1.4_linux_x64_O2_GCC7.zip > /dev/null 2>&1
+				chmod +x cpuminer
+				echo "./cpuminer"
+		  break;; 
+		   
+	  * )    echo "Yes/No [yY/nN]";;
+		 
+	  esac 
+	done 
+
+}
+
+compilearmv71 () { 
+	
+	while true 
+	do 
+	  # (1) prompt user, and read command line argument 
+	  read -p "Download and compile newest miner version(takes longer)? Yes/No [yY/nN] " answer 
+	 
+	  # (2) handle the input we were given 
+	  case $answer in 
+	   [yY]* )  DEBIAN_FRONTEND=noninteractive apt-get -y -qq update
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq upgrade
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq install make git automake autoconf pkg-config libcurl4-openssl-dev libjansson-dev libssl-dev libgmp-dev zlib1g-dev
+				git clone https://github.com/fireworm71/veriumMiner > /dev/null 2>&1
+				cd veriumMiner
+				./build.sh > /dev/null 2>&1
+				make > /dev/null 2>&1
+				echo "./veriumMiner/cpuminer"
+		  break;;
+		   
+	   [nN]* )	DEBIAN_FRONTEND=noninteractive apt-get -y -qq update
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq upgrade
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq install libcurl4-openssl-dev libjansson-dev unzip
+				wget https://github.com/fireworm71/veriumMiner/releases/download/v1.3/cpuminer_ARMV7_NEON_O3_GCC7.zip > /dev/null 2>&1
+				unzip cpuminer_ARMV7_NEON_O3_GCC7.zip > /dev/null 2>&1
+				chmod +x cpuminer
+				echo "./cpuminer"
+		  break;; 
+		   
+	  * )    echo "Yes/No [yY/nN]";;
+		 
+	  esac 
+	done 
+
+}
+
+compileaarch64 () { 
+	
+	while true 
+	do 
+	  # (1) prompt user, and read command line argument 
+	  read -p "Download and compile newest miner version(takes longer)? Yes/No [yY/nN] " answer 
+	 
+	  # (2) handle the input we were given 
+	  case $answer in 
+	   [yY]* )  DEBIAN_FRONTEND=noninteractive apt-get -y -qq update
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq upgrade
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq install make git automake autoconf pkg-config libcurl4-openssl-dev libjansson-dev libssl-dev libgmp-dev zlib1g-dev
+				git clone https://github.com/fireworm71/veriumMiner > /dev/null 2>&1
+				cd veriumMiner
+				./build.sh > /dev/null 2>&1
+				make > /dev/null 2>&1
+				echo "./veriumMiner/cpuminer"
+		  break;;
+		   
+	   [nN]* )	DEBIAN_FRONTEND=noninteractive apt-get -y -qq update
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq upgrade
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq install libcurl4-openssl-dev libjansson-dev unzip
+				wget https://github.com/fireworm71/veriumMiner/releases/download/v1.3/cpuminer_ARMV8_O2_GCC7.zip > /dev/null 2>&1
+				unzip cpuminer_ARMV8_O2_GCC7.zip > /dev/null 2>&1
+				chmod +x cpuminer
+				echo "./cpuminer"
+		  break;; 
+		   
+	  * )    echo "Yes/No [yY/nN]";;
+		 
+	  esac 
+	done 
+
+}
+
+hugepages () { 
+
+	while true 
+	do 
+	  # (1) prompt user, and read command line argument 
+	  read -p "Use Hugepages? Yes/No [yY/nN] " answer 
+	 
+	  # (2) handle the input we were given 
+	  case $answer in 
+	   [yY]* )  threads=$(grep -c ^processor /proc/cpuinfo)
+
+				set=$(grep avx2 /proc/cpuinfo)
+				if [[ -z "$set" ]]
+				then
+						set=193
+				else
+						set=386
+				fi
+
+				size=$((set*threads))
+
+				echo vm.nr_hugepages=$size >> /etc/sysctl.conf
+
+				sysctl -p
+		  break;;
+		   
+	   [nN]* )
+		  break;; 
+		   
+	  * )    echo "Yes/No [yY/nN]";;
+		 
+	  esac 
+	done 
+
+}
+
+poolcreds () { 
+	
+			read -p "poolurl: " poolurl
+			read -p "poolport: " poolport
+			read -p "username: " username
+			read -p "workername: " workername
+			read -p "workerpass: " workerpass				
+			string="$1 -o stratum+tcp://$poolurl:$poolport -O $username.$workername:$workerpass"
+			echo $string
+}
+
+type=$(lscpu | grep -m 1 "Architecture:" | sed 's/[^=:]*[=:] //' | sed 's|[/ ]||g')
+
+case $type in 
+   [x86_64]* )  
+		gccinstall
+		path=$(compilex86_64)
+		hugepages
+		poolcreds $path > RunMe
+		chmod +x RunMe
+		echo "Finished installation. Use ./RunMe to start mining"
+		exit 0;;
        
-   [nN]* )
-      break;; 
-       
-  * )    echo "Yes/No [yY/nN]";;
+   [armv71]* )
+		path=$(compilearmv71)
+		poolcreds $path > RunMe
+		chmod +x RunMe
+		echo "Finished installation. Use ./RunMe to start mining"
+		exit 0;;
+	  
+   [aarch64]* )
+		path=$(compileaarch64)
+		poolcreds $path > RunMe
+		chmod +x RunMe
+		echo "Finished installation. Use ./RunMe to start mining"
+		exit 0;;
+		
+  * )   echo "Your CPU Architecture is not supported. Sorry"
+		exit 1;;
      
   esac 
 done 
 
-while true 
-do 
-  # (1) prompt user, and read command line argument 
-  read -p "Download and compile newest miner version(takes longer)? Yes/No [yY/nN] " answer 
- 
-  # (2) handle the input we were given 
-  case $answer in 
-   [yY]* )  apt-get -y -qq update
-			apt-get -y -qq upgrade
-			apt-get -y -qq install make git automake autoconf pkg-config libcurl4-openssl-dev libjansson-dev libssl-dev libgmp-dev zlib1g-dev
-			git clone https://github.com/fireworm71/veriumMiner
-			cd veriumMiner
-			./build.sh
-			make 
-			version="Use: cd veriumMiner -> ./cpuminer [options]"
-	  break;;
-       
-   [nN]* )	apt-get -y -qq update
-			apt-get -y -qq upgrade
-			apt-get -y -qq install libcurl4-openssl-dev libjansson-dev unzip
-			wget https://github.com/fireworm71/veriumMiner/releases/download/v1.4/cpuminer_1.4_linux_x64_O2_GCC7.zip
-			unzip cpuminer_1.4_linux_x64_O2_GCC7.zip
-			chmod +x cpuminer
-			version="Use: ./cpuminer [options]"
-      break;; 
-       
-  * )    echo "Yes/No [yY/nN]";;
-     
-  esac 
-done 
-
-while true 
-do 
-  # (1) prompt user, and read command line argument 
-  read -p "Use Hugepages? Yes/No [yY/nN] " answer 
- 
-  # (2) handle the input we were given 
-  case $answer in 
-   [yY]* )  threads=$(grep -c ^processor /proc/cpuinfo)
-
-			set=$(grep avx2 /proc/cpuinfo)
-			if [[ -z "$set" ]]
-			then
-					set=193
-			else
-					set=386
-			fi
-
-			size=$((set*threads))
-
-			echo vm.nr_hugepages=$size >> /etc/sysctl.conf
-
-			sysctl -p
-	  break;;
-       
-   [nN]* )
-      break;; 
-       
-  * )    echo "Yes/No [yY/nN]";;
-     
-  esac 
-done 
-
-echo "Finished installation. $version"
