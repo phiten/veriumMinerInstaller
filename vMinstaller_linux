@@ -20,15 +20,15 @@ gccinstall () {
 	 
 	  # (2) handle the input we were given 
 	  case $answer in 
-	   [yY]* )  apt-get -y -qq update
-				apt-get -y -qq upgrade
-				apt-get -y -qq install unzip flex make automake autoconf pkg-config
-				wget https://github.com/gcc-mirror/gcc/archive/gcc-7_2_0-release.zip
-				unzip gcc-7_2_0-release.zip
+	   [yY]* )  DEBIAN_FRONTEND=noninteractive apt-get -y -qq update
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq upgrade
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq install unzip flex make automake autoconf pkg-config
+				DEBIAN_FRONTEND=noninteractive wget https://github.com/gcc-mirror/gcc/archive/gcc-7_2_0-release.zip
+				unzip gcc-7_2_0-release.zip > /dev/null 2>&1
 				cd gcc-gcc-7_2_0-release
-				./contrib/download_prerequisites
+				./contrib/download_prerequisites > /dev/null 2>&1
 				mkdir build && cd build
-				../configure --enable-languages=c,c++ --disable-multilib
+				../configure --enable-languages=c,c++ --disable-multilib > /dev/null 2>&1
 				make -j 8
 				make install
 		  break;;
