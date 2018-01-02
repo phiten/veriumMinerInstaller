@@ -207,6 +207,7 @@ runme () {
 	   [yY]* )  
 			poolcreds $1 > RunMe
 			chmod +x RunMe
+			echo "Finished installation. Use ./RunMe in your choosen directory to start mining."
 		  break;;
 		   
 	   [nN]* )
@@ -239,7 +240,6 @@ case $type in
 		path=$(compilex86_64)
 		hugepages
 		runme $path
-		echo "Finished installation. Use ./RunMe in your choosen directory to start mining."
 		echo "If you like what I'm doing please donate :) VRM/VRC VJniF5bP9Acy7ce33yR4jRYSQ66Z4vGH8s"
 		exit 0;;
        
@@ -247,7 +247,6 @@ case $type in
 		folder
 		path=$(compilearmv71)
 		runme $path
-		echo "Finished installation. Use ./RunMe in your choosen directory to start mining."
 		echo "If you like what I'm doing please donate :) VRM/VRC VJniF5bP9Acy7ce33yR4jRYSQ66Z4vGH8s"
 		exit 0;;
 	  
@@ -255,7 +254,6 @@ case $type in
 		folder
 		path=$(compileaarch64)
 		runme $path
-		echo "Finished installation. Use ./RunMe in your choosen directory to start mining."
 		echo "If you like what I'm doing please donate :) VRM/VRC VJniF5bP9Acy7ce33yR4jRYSQ66Z4vGH8s"
 		exit 0;;
 		
