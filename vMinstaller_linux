@@ -1,0 +1,267 @@
+#!/bin/bash
+
+#Philipp "3D" ten Brink
+#2018-01-02
+#donations: VRM/VRC VJniF5bP9Acy7ce33yR4jRYSQ66Z4vGH8s
+
+#GNU General Public License v3.0 see LICENSE
+
+if [ "$(id -u)" != "0" ]; then
+	echo "Sorry, you are not root or sudo."
+	exit 1
+fi
+
+folder () { 
+
+	read -p "Input foldername where to create the files: " answer
+	mkdir $answer
+	cd $answer
+
+}
+
+gccinstall () { 
+   
+	while true 
+	do 
+	  # (1) prompt user, and read command line argument 
+	  read -p "Download and compile newest GCC version(takes very long)? Yes/No [yY/nN] " answer 
+	 
+	  # (2) handle the input we were given 
+	  case $answer in 
+	   [yY]* )  DEBIAN_FRONTEND=noninteractive apt-get -y -qq update
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq upgrade
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq install unzip flex make automake autoconf pkg-config
+				DEBIAN_FRONTEND=noninteractive wget https://github.com/gcc-mirror/gcc/archive/gcc-7_2_0-release.zip > /dev/null 2>&1
+				unzip gcc-7_2_0-release.zip > /dev/null 2>&1
+				cd gcc-gcc-7_2_0-release
+				./contrib/download_prerequisites > /dev/null 2>&1
+				mkdir build && cd build
+				../configure --enable-languages=c,c++ --disable-multilib > /dev/null 2>&1
+				make -j 8
+				make install
+				rm -rf gcc-7_2_0-release.zip gcc-gcc-7_2_0-release
+		  break;;
+		   
+	   [nN]* )
+		  break;; 
+		   
+	  * )    echo "Yes/No [yY/nN]";;
+		 
+	  esac 
+	done 
+
+}
+
+compilex86_64 () { 
+	
+	while true 
+	do 
+	  # (1) prompt user, and read command line argument 
+	  read -p "Download and compile newest miner version(takes longer)? Yes/No [yY/nN] " answer 
+	 
+	  # (2) handle the input we were given 
+	  case $answer in 
+	   [yY]* )  DEBIAN_FRONTEND=noninteractive apt-get -y -qq update > /dev/null 2>&1
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq upgrade > /dev/null 2>&1
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq install make git automake autoconf pkg-config libcurl4-openssl-dev libjansson-dev libssl-dev libgmp-dev zlib1g-dev > /dev/null 2>&1
+				git clone https://github.com/fireworm71/veriumMiner > /dev/null 2>&1
+				cd veriumMiner
+				./build.sh > /dev/null 2>&1
+				echo "./veriumMiner/cpuminer"
+		  break;;
+		   
+	   [nN]* )	DEBIAN_FRONTEND=noninteractive apt-get -y -qq update > /dev/null 2>&1
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq upgrade > /dev/null 2>&1
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq install libcurl4-openssl-dev libjansson-dev unzip > /dev/null 2>&1
+				DEBIAN_FRONTEND=noninteractive wget https://github.com/fireworm71/veriumMiner/releases/download/v1.4/cpuminer_1.4_linux_x64_O2_GCC7.zip > /dev/null 2>&1
+				unzip cpuminer_1.4_linux_x64_O2_GCC7.zip > /dev/null 2>&1
+				chmod +x cpuminer
+				rm -rf cpuminer_1.4_linux_x64_O2_GCC7.zip
+				echo "./cpuminer"
+		  break;; 
+		   
+	  * )    echo "Yes/No [yY/nN]";;
+		 
+	  esac 
+	done 
+
+}
+
+compilearmv71 () { 
+	
+	while true 
+	do 
+	  # (1) prompt user, and read command line argument 
+	  read -p "Download and compile newest miner version(takes longer)? Yes/No [yY/nN] " answer 
+	 
+	  # (2) handle the input we were given 
+	  case $answer in 
+	   [yY]* )  DEBIAN_FRONTEND=noninteractive apt-get -y -qq update > /dev/null 2>&1
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq upgrade > /dev/null 2>&1
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq install make git automake autoconf pkg-config libcurl4-openssl-dev libjansson-dev libssl-dev libgmp-dev zlib1g-dev > /dev/null 2>&1
+				git clone https://github.com/fireworm71/veriumMiner > /dev/null 2>&1
+				cd veriumMiner
+				./build.sh > /dev/null 2>&1
+				./configure CFLAGS="-mfpu=neon" --with-crypto --with-curl > /dev/null 2>&1
+				make clean > /dev/null 2>&1 && make > /dev/null 2>&1
+				echo "./veriumMiner/cpuminer"
+		  break;;
+		   
+	   [nN]* )	DEBIAN_FRONTEND=noninteractive apt-get -y -qq update > /dev/null 2>&1
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq upgrade > /dev/null 2>&1
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq install libcurl4-openssl-dev libjansson-dev unzip > /dev/null 2>&1
+				wget https://github.com/fireworm71/veriumMiner/releases/download/v1.3/cpuminer_ARMV7_NEON_O3_GCC7.zip > /dev/null 2>&1
+				unzip cpuminer_ARMV7_NEON_O3_GCC7.zip > /dev/null 2>&1
+				chmod +x cpuminer
+				rm -rf cpuminer_ARMV7_NEON_O3_GCC7.zip
+				echo "./cpuminer"
+		  break;; 
+		   
+	  * )    echo "Yes/No [yY/nN]";;
+		 
+	  esac 
+	done 
+
+}
+
+compileaarch64 () { 
+	
+	while true 
+	do 
+	  # (1) prompt user, and read command line argument 
+	  read -p "Download and compile newest miner version(takes longer)? Yes/No [yY/nN] " answer 
+	 
+	  # (2) handle the input we were given 
+	  case $answer in 
+	   [yY]* )  DEBIAN_FRONTEND=noninteractive apt-get -y -qq update > /dev/null 2>&1
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq upgrade > /dev/null 2>&1
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq install make git automake autoconf pkg-config libcurl4-openssl-dev libjansson-dev libssl-dev libgmp-dev zlib1g-dev > /dev/null 2>&1
+				git clone https://github.com/fireworm71/veriumMiner > /dev/null 2>&1
+				cd veriumMiner
+				./build.sh > /dev/null 2>&1
+				echo "./veriumMiner/cpuminer"
+		  break;;
+		   
+	   [nN]* )	DEBIAN_FRONTEND=noninteractive apt-get -y -qq update > /dev/null 2>&1
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq upgrade > /dev/null 2>&1
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq install libcurl4-openssl-dev libjansson-dev unzip > /dev/null 2>&1
+				wget https://github.com/fireworm71/veriumMiner/releases/download/v1.3/cpuminer_ARMV8_O2_GCC7.zip > /dev/null 2>&1
+				unzip cpuminer_ARMV8_O2_GCC7.zip > /dev/null 2>&1
+				chmod +x cpuminer
+				rm -rf cpuminer_ARMV8_O2_GCC7.zip
+				echo "./cpuminer"
+		  break;; 
+		   
+	  * )    echo "Yes/No [yY/nN]";;
+		 
+	  esac 
+	done 
+
+}
+
+hugepages () { 
+
+	while true 
+	do 
+	  # (1) prompt user, and read command line argument 
+	  read -p "Use Hugepages? Yes/No [yY/nN] " answer 
+	 
+	  # (2) handle the input we were given 
+	  case $answer in 
+	   [yY]* )  threads=$(grep -c ^processor /proc/cpuinfo)
+
+				set=$(grep avx2 /proc/cpuinfo)
+				if [[ -z "$set" ]]
+				then
+						set=193
+				else
+						set=386
+				fi
+
+				size=$((set*threads))
+
+				echo vm.nr_hugepages=$size >> /etc/sysctl.conf
+
+				sysctl -p
+		  break;;
+		   
+	   [nN]* )
+		  break;; 
+		   
+	  * )    echo "Yes/No [yY/nN]";;
+		 
+	  esac 
+	done 
+
+}
+
+runme () { 
+
+	while true 
+	do 
+	  # (1) prompt user, and read command line argument 
+	  read -p "Would you like to setup your pool mining script? Yes/No [yY/nN] " answer 
+	 
+	  # (2) handle the input we were given 
+	  case $answer in 
+	   [yY]* )  
+			poolcreds $1 > RunMe
+			chmod +x RunMe
+		  break;;
+		   
+	   [nN]* )
+		  break;; 
+		   
+	  * )   echo "Yes/No [yY/nN]";;
+		 
+	  esac 
+	done 
+
+}
+
+poolcreds () { 
+	
+			read -p "poolurl: " poolurl
+			read -p "poolport: " poolport
+			read -p "username: " username
+			read -p "workername: " workername
+			read -p "workerpass: " workerpass				
+			string="$1 -o stratum+tcp://$poolurl:$poolport -O $username.$workername:$workerpass"
+			echo $string
+}
+
+type=$(lscpu | grep -m 1 "Architecture:" | sed 's/[^=:]*[=:] //' | sed 's|[/ ]||g')
+
+case $type in 
+   [x86_64]* ) 
+		folder
+		gccinstall
+		path=$(compilex86_64)
+		hugepages
+		runme $path
+		echo "Finished installation. Use ./RunMe in your choosen directory to start mining."
+		echo "If you like what I'm doing please donate :) VRM/VRC VJniF5bP9Acy7ce33yR4jRYSQ66Z4vGH8s"
+		exit 0;;
+       
+   [armv71]* )
+		folder
+		path=$(compilearmv71)
+		runme $path
+		echo "Finished installation. Use ./RunMe in your choosen directory to start mining."
+		echo "If you like what I'm doing please donate :) VRM/VRC VJniF5bP9Acy7ce33yR4jRYSQ66Z4vGH8s"
+		exit 0;;
+	  
+   [aarch64]* )
+		folder
+		path=$(compileaarch64)
+		runme $path
+		echo "Finished installation. Use ./RunMe in your choosen directory to start mining."
+		echo "If you like what I'm doing please donate :) VRM/VRC VJniF5bP9Acy7ce33yR4jRYSQ66Z4vGH8s"
+		exit 0;;
+		
+  * )   echo "Your CPU Architecture is not supported. Sorry"
+		exit 1;;
+     
+  esac 
+done 
+

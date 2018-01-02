@@ -4,13 +4,15 @@ This script will install @fireworm71 's veriumMiner (https://github.com/fireworm
 
 PLEASE READ QUESTIONS ASKED CAREFULLY!
 
-dependencies: sudo apt-get install git
+dependencies: sudo apt-get install git lscpu
 
 1. git clone https://github.com/phiten/veriumMinerInstaller
 
-2. sudo chmod +x vMinstaller_linux_x64
+2. cd veriumMinerInstaller
 
-3. sudo ./vMinstaller_linux_x64
+3. sudo chmod +x vMinstaller_linux
+
+4. sudo ./vMinstaller_linux
 
 
 Donation:
