@@ -58,7 +58,6 @@ compilex86_64 () {
 				git clone https://github.com/fireworm71/veriumMiner > /dev/null 2>&1
 				cd veriumMiner
 				./build.sh > /dev/null 2>&1
-				make > /dev/null 2>&1
 				echo "./veriumMiner/cpuminer"
 		  break;;
 		   
@@ -93,7 +92,6 @@ compilearmv71 () {
 				git clone https://github.com/fireworm71/veriumMiner > /dev/null 2>&1
 				cd veriumMiner
 				./build.sh > /dev/null 2>&1
-				make > /dev/null 2>&1
 				echo "./veriumMiner/cpuminer"
 		  break;;
 		   
@@ -128,7 +126,6 @@ compileaarch64 () {
 				git clone https://github.com/fireworm71/veriumMiner > /dev/null 2>&1
 				cd veriumMiner
 				./build.sh > /dev/null 2>&1
-				make > /dev/null 2>&1
 				echo "./veriumMiner/cpuminer"
 		  break;;
 		   
