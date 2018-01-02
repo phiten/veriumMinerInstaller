@@ -14,7 +14,6 @@ fi
 folder () { 
 
 	read -p "Input foldername where to create the files: " answer
-	echo "$answer"
 	mkdir $answer
 	cd $answer
 
@@ -206,7 +205,7 @@ runme () {
 	  # (2) handle the input we were given 
 	  case $answer in 
 	   [yY]* )  
-			poolcreds $path > RunMe
+			poolcreds $1 > RunMe
 			chmod +x RunMe
 		  break;;
 		   
@@ -235,26 +234,29 @@ type=$(lscpu | grep -m 1 "Architecture:" | sed 's/[^=:]*[=:] //' | sed 's|[/ ]||
 
 case $type in 
    [x86_64]* ) 
-		dir=$(folder)
+		folder
 		gccinstall
 		path=$(compilex86_64)
 		hugepages
-		runme
-		echo "Finished installation. Use ./$dir/RunMe to start mining"
+		runme $path
+		echo "Finished installation. Use ./RunMe in your choosen directory to start mining."
+		echo "If you like what I'm doing please donate :) VRM/VRC VJniF5bP9Acy7ce33yR4jRYSQ66Z4vGH8s"
 		exit 0;;
        
    [armv71]* )
-		dir=$(folder)
+		folder
 		path=$(compilearmv71)
-		runme
-		echo "Finished installation. Use ./$dir/RunMe to start mining"
+		runme $path
+		echo "Finished installation. Use ./RunMe in your choosen directory to start mining."
+		echo "If you like what I'm doing please donate :) VRM/VRC VJniF5bP9Acy7ce33yR4jRYSQ66Z4vGH8s"
 		exit 0;;
 	  
    [aarch64]* )
-		dir=$(folder)
+		folder
 		path=$(compileaarch64)
-		runme
-		echo "Finished installation. Use ./$dir/RunMe to start mining"
+		runme $path
+		echo "Finished installation. Use ./RunMe in your choosen directory to start mining."
+		echo "If you like what I'm doing please donate :) VRM/VRC VJniF5bP9Acy7ce33yR4jRYSQ66Z4vGH8s"
 		exit 0;;
 		
   * )   echo "Your CPU Architecture is not supported. Sorry"
