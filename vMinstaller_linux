@@ -61,18 +61,18 @@ compilex86_64 () {
 	 
 	  # (2) handle the input we were given 
 	  case $answer in 
-	   [yY]* )  DEBIAN_FRONTEND=noninteractive apt-get -y -qq update
-				DEBIAN_FRONTEND=noninteractive apt-get -y -qq upgrade
-				DEBIAN_FRONTEND=noninteractive apt-get -y -qq install make git automake autoconf pkg-config libcurl4-openssl-dev libjansson-dev libssl-dev libgmp-dev zlib1g-dev
+	   [yY]* )  DEBIAN_FRONTEND=noninteractive apt-get -y -qq update > /dev/null 2>&1
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq upgrade > /dev/null 2>&1
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq install make git automake autoconf pkg-config libcurl4-openssl-dev libjansson-dev libssl-dev libgmp-dev zlib1g-dev > /dev/null 2>&1
 				git clone https://github.com/fireworm71/veriumMiner > /dev/null 2>&1
 				cd veriumMiner
 				./build.sh > /dev/null 2>&1
 				echo "./veriumMiner/cpuminer"
 		  break;;
 		   
-	   [nN]* )	DEBIAN_FRONTEND=noninteractive apt-get -y -qq update
-				DEBIAN_FRONTEND=noninteractive apt-get -y -qq upgrade
-				DEBIAN_FRONTEND=noninteractive apt-get -y -qq install libcurl4-openssl-dev libjansson-dev unzip
+	   [nN]* )	DEBIAN_FRONTEND=noninteractive apt-get -y -qq update > /dev/null 2>&1
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq upgrade > /dev/null 2>&1
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq install libcurl4-openssl-dev libjansson-dev unzip > /dev/null 2>&1
 				DEBIAN_FRONTEND=noninteractive wget https://github.com/fireworm71/veriumMiner/releases/download/v1.4/cpuminer_1.4_linux_x64_O2_GCC7.zip > /dev/null 2>&1
 				unzip cpuminer_1.4_linux_x64_O2_GCC7.zip > /dev/null 2>&1
 				chmod +x cpuminer
@@ -96,9 +96,9 @@ compilearmv71 () {
 	 
 	  # (2) handle the input we were given 
 	  case $answer in 
-	   [yY]* )  DEBIAN_FRONTEND=noninteractive apt-get -y -qq update
-				DEBIAN_FRONTEND=noninteractive apt-get -y -qq upgrade
-				DEBIAN_FRONTEND=noninteractive apt-get -y -qq install make git automake autoconf pkg-config libcurl4-openssl-dev libjansson-dev libssl-dev libgmp-dev zlib1g-dev
+	   [yY]* )  DEBIAN_FRONTEND=noninteractive apt-get -y -qq update > /dev/null 2>&1
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq upgrade > /dev/null 2>&1
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq install make git automake autoconf pkg-config libcurl4-openssl-dev libjansson-dev libssl-dev libgmp-dev zlib1g-dev > /dev/null 2>&1
 				git clone https://github.com/fireworm71/veriumMiner > /dev/null 2>&1
 				cd veriumMiner
 				./build.sh > /dev/null 2>&1
@@ -107,9 +107,9 @@ compilearmv71 () {
 				echo "./veriumMiner/cpuminer"
 		  break;;
 		   
-	   [nN]* )	DEBIAN_FRONTEND=noninteractive apt-get -y -qq update
-				DEBIAN_FRONTEND=noninteractive apt-get -y -qq upgrade
-				DEBIAN_FRONTEND=noninteractive apt-get -y -qq install libcurl4-openssl-dev libjansson-dev unzip
+	   [nN]* )	DEBIAN_FRONTEND=noninteractive apt-get -y -qq update > /dev/null 2>&1
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq upgrade > /dev/null 2>&1
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq install libcurl4-openssl-dev libjansson-dev unzip > /dev/null 2>&1
 				wget https://github.com/fireworm71/veriumMiner/releases/download/v1.3/cpuminer_ARMV7_NEON_O3_GCC7.zip > /dev/null 2>&1
 				unzip cpuminer_ARMV7_NEON_O3_GCC7.zip > /dev/null 2>&1
 				chmod +x cpuminer
@@ -133,18 +133,18 @@ compileaarch64 () {
 	 
 	  # (2) handle the input we were given 
 	  case $answer in 
-	   [yY]* )  DEBIAN_FRONTEND=noninteractive apt-get -y -qq update
-				DEBIAN_FRONTEND=noninteractive apt-get -y -qq upgrade
-				DEBIAN_FRONTEND=noninteractive apt-get -y -qq install make git automake autoconf pkg-config libcurl4-openssl-dev libjansson-dev libssl-dev libgmp-dev zlib1g-dev
+	   [yY]* )  DEBIAN_FRONTEND=noninteractive apt-get -y -qq update > /dev/null 2>&1
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq upgrade > /dev/null 2>&1
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq install make git automake autoconf pkg-config libcurl4-openssl-dev libjansson-dev libssl-dev libgmp-dev zlib1g-dev > /dev/null 2>&1
 				git clone https://github.com/fireworm71/veriumMiner > /dev/null 2>&1
 				cd veriumMiner
 				./build.sh > /dev/null 2>&1
 				echo "./veriumMiner/cpuminer"
 		  break;;
 		   
-	   [nN]* )	DEBIAN_FRONTEND=noninteractive apt-get -y -qq update
-				DEBIAN_FRONTEND=noninteractive apt-get -y -qq upgrade
-				DEBIAN_FRONTEND=noninteractive apt-get -y -qq install libcurl4-openssl-dev libjansson-dev unzip
+	   [nN]* )	DEBIAN_FRONTEND=noninteractive apt-get -y -qq update > /dev/null 2>&1
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq upgrade > /dev/null 2>&1
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq install libcurl4-openssl-dev libjansson-dev unzip > /dev/null 2>&1
 				wget https://github.com/fireworm71/veriumMiner/releases/download/v1.3/cpuminer_ARMV8_O2_GCC7.zip > /dev/null 2>&1
 				unzip cpuminer_ARMV8_O2_GCC7.zip > /dev/null 2>&1
 				chmod +x cpuminer
