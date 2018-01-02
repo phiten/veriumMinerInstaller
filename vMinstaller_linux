@@ -11,6 +11,14 @@ if [ "$(id -u)" != "0" ]; then
 	exit 1
 fi
 
+folder () { 
+
+	read -p "Input foldername where to create the files: " answer 
+	mkdir $answer
+	cd $answer
+
+}
+
 gccinstall () { 
    
 	while true 
@@ -31,6 +39,7 @@ gccinstall () {
 				../configure --enable-languages=c,c++ --disable-multilib > /dev/null 2>&1
 				make -j 8
 				make install
+				rm -rf gcc-7_2_0-release.zip gcc-gcc-7_2_0-release
 		  break;;
 		   
 	   [nN]* )
@@ -67,6 +76,7 @@ compilex86_64 () {
 				DEBIAN_FRONTEND=noninteractive wget https://github.com/fireworm71/veriumMiner/releases/download/v1.4/cpuminer_1.4_linux_x64_O2_GCC7.zip > /dev/null 2>&1
 				unzip cpuminer_1.4_linux_x64_O2_GCC7.zip > /dev/null 2>&1
 				chmod +x cpuminer
+				rm -rf cpuminer_1.4_linux_x64_O2_GCC7.zip
 				echo "./cpuminer"
 		  break;; 
 		   
@@ -103,6 +113,7 @@ compilearmv71 () {
 				wget https://github.com/fireworm71/veriumMiner/releases/download/v1.3/cpuminer_ARMV7_NEON_O3_GCC7.zip > /dev/null 2>&1
 				unzip cpuminer_ARMV7_NEON_O3_GCC7.zip > /dev/null 2>&1
 				chmod +x cpuminer
+				rm -rf cpuminer_ARMV7_NEON_O3_GCC7.zip
 				echo "./cpuminer"
 		  break;; 
 		   
@@ -137,6 +148,7 @@ compileaarch64 () {
 				wget https://github.com/fireworm71/veriumMiner/releases/download/v1.3/cpuminer_ARMV8_O2_GCC7.zip > /dev/null 2>&1
 				unzip cpuminer_ARMV8_O2_GCC7.zip > /dev/null 2>&1
 				chmod +x cpuminer
+				rm -rf cpuminer_ARMV8_O2_GCC7.zip
 				echo "./cpuminer"
 		  break;; 
 		   
@@ -197,7 +209,8 @@ poolcreds () {
 type=$(lscpu | grep -m 1 "Architecture:" | sed 's/[^=:]*[=:] //' | sed 's|[/ ]||g')
 
 case $type in 
-   [x86_64]* )  
+   [x86_64]* ) 
+		folder
 		gccinstall
 		path=$(compilex86_64)
 		hugepages
@@ -207,6 +220,7 @@ case $type in
 		exit 0;;
        
    [armv71]* )
+		folder
 		path=$(compilearmv71)
 		poolcreds $path > RunMe
 		chmod +x RunMe
@@ -214,6 +228,7 @@ case $type in
 		exit 0;;
 	  
    [aarch64]* )
+		folder
 		path=$(compileaarch64)
 		poolcreds $path > RunMe
 		chmod +x RunMe
