@@ -1,5 +1,7 @@
 # veriumMinerInstaller
 
+This script will install @fireworm71 's veriumMiner (https://github.com/fireworm71/veriumMiner).
+
 PLEASE READ QUESTIONS ASKED CAREFULLY!
 
 dependencies: sudo apt-get install git
