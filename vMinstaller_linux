@@ -234,7 +234,7 @@ poolcreds () {
 type=$(lscpu | grep -m 1 "Architecture:" | sed 's/[^=:]*[=:] //' | sed 's|[/ ]||g')
 
 case $type in 
-   [x86_64]* ) 
+   x86_64) 
 		folder
 		gccinstall
 		path=$(compilex86_64)
@@ -243,14 +243,14 @@ case $type in
 		echo "If you like what I'm doing please donate :) VRM/VRC VJniF5bP9Acy7ce33yR4jRYSQ66Z4vGH8s"
 		exit 0;;
        
-   [armv71]* )
+   armv71)
 		folder
 		path=$(compilearmv71)
 		runme $path
 		echo "If you like what I'm doing please donate :) VRM/VRC VJniF5bP9Acy7ce33yR4jRYSQ66Z4vGH8s"
 		exit 0;;
 	  
-   [aarch64]* )
+   aarch64)
 		folder
 		path=$(compileaarch64)
 		runme $path
