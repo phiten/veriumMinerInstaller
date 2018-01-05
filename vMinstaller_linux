@@ -13,7 +13,12 @@ fi
 
 folder () { 
 
-	read -p "Input foldername where to create the files: " answer
+	if [ $1 -eq 0 ]; then 
+		read -p "Input foldername where to create the files: " answer
+	else
+		answer="miner"
+	fi
+	
 	mkdir $answer
 	cd $answer
 
@@ -23,8 +28,12 @@ gccinstall () {
    
 	while true 
 	do 
-	  # (1) prompt user, and read command line argument 
-	  read -p "Download and compile newest GCC version(takes very long)? Yes/No [yY/nN] " answer 
+	
+		if [ $1 -eq 0 ]; then 
+			read -p "Download and compile newest GCC version(takes very long)? Yes/No [yY/nN] " answer 
+		else
+			answer="n"
+		fi
 	 
 	  # (2) handle the input we were given 
 	  case $answer in 
@@ -56,9 +65,13 @@ compilex86_64 () {
 	
 	while true 
 	do 
-	  # (1) prompt user, and read command line argument 
-	  read -p "Download and compile newest miner version(takes longer)? Yes/No [yY/nN] " answer 
-	 
+	
+		if [ $1 -eq 0 ]; then 
+			read -p "Download and compile newest miner version(takes longer)? Yes/No [yY/nN] " answer 
+		else
+			answer="y"
+		fi
+
 	  # (2) handle the input we were given 
 	  case $answer in 
 	   [yY]* )  DEBIAN_FRONTEND=noninteractive apt-get -y -qq update > /dev/null 2>&1
@@ -91,11 +104,15 @@ compilearmv71 () {
 	
 	while true 
 	do 
-	  # (1) prompt user, and read command line argument 
-	  read -p "Download and compile newest miner version(takes longer)? Yes/No [yY/nN] " answer 
-	 
+	
+		if [ $1 -eq 0 ]; then 
+			read -p "Download and compile newest miner version(takes longer)? Yes/No [yY/nN] " answer 
+		else
+			answer="y"
+		fi
+
 	  # (2) handle the input we were given 
-	  case $answer in 
+	  case $answer in
 	   [yY]* )  DEBIAN_FRONTEND=noninteractive apt-get -y -qq update > /dev/null 2>&1
 				DEBIAN_FRONTEND=noninteractive apt-get -y -qq upgrade > /dev/null 2>&1
 				DEBIAN_FRONTEND=noninteractive apt-get -y -qq install make git automake autoconf pkg-config libcurl4-openssl-dev libjansson-dev libssl-dev libgmp-dev zlib1g-dev > /dev/null 2>&1
@@ -128,11 +145,15 @@ compileaarch64 () {
 	
 	while true 
 	do 
-	  # (1) prompt user, and read command line argument 
-	  read -p "Download and compile newest miner version(takes longer)? Yes/No [yY/nN] " answer 
-	 
+	
+		if [ $1 -eq 0 ]; then 
+			read -p "Download and compile newest miner version(takes longer)? Yes/No [yY/nN] " answer 
+		else
+			answer="y"
+		fi
+
 	  # (2) handle the input we were given 
-	  case $answer in 
+	  case $answer in
 	   [yY]* )  DEBIAN_FRONTEND=noninteractive apt-get -y -qq update > /dev/null 2>&1
 				DEBIAN_FRONTEND=noninteractive apt-get -y -qq upgrade > /dev/null 2>&1
 				DEBIAN_FRONTEND=noninteractive apt-get -y -qq install make git automake autoconf pkg-config libcurl4-openssl-dev libjansson-dev libssl-dev libgmp-dev zlib1g-dev > /dev/null 2>&1
@@ -163,11 +184,15 @@ hugepages () {
 
 	while true 
 	do 
-	  # (1) prompt user, and read command line argument 
-	  read -p "Use Hugepages? Yes/No [yY/nN] " answer 
-	 
+	
+		if [ $1 -eq 0 ]; then 
+			read -p "Use Hugepages? Yes/No [yY/nN] " answer 
+		else
+			answer="y"
+		fi
+
 	  # (2) handle the input we were given 
-	  case $answer in 
+	  case $answer in
 	   [yY]* )  threads=$(grep -c ^processor /proc/cpuinfo)
 
 				set=$(grep avx2 /proc/cpuinfo)
@@ -199,13 +224,17 @@ runme () {
 
 	while true 
 	do 
-	  # (1) prompt user, and read command line argument 
-	  read -p "Would you like to setup your pool mining script? Yes/No [yY/nN] " answer 
-	 
+	
+		if [ $1 -eq 0 ]; then 
+			read -p "Would you like to setup your mining pool RunMe? Yes/No [yY/nN] " answer 
+		else
+			answer="y"
+		fi
+
 	  # (2) handle the input we were given 
-	  case $answer in 
+	  case $answer in
 	   [yY]* )  
-			poolcreds $1 > RunMe
+			poolcreds $2 > RunMe
 			chmod +x RunMe
 			echo "Finished installation. Use ./RunMe in your choosen directory to start mining."
 		  break;;
@@ -233,33 +262,50 @@ poolcreds () {
 
 type=$(lscpu | grep -m 1 "Architecture:" | sed 's/[^=:]*[=:] //' | sed 's|[/ ]||g')
 
+while true 
+do 
+  # (1) prompt user, and read command line argument 
+  read -p "Use recommended settings? Yes/No [yY/nN] " answer 
+ 
+  # (2) handle the input we were given 
+  case $answer in 
+   [yY]* )  default=1
+	  break;;
+	   
+   [nN]* )
+			default=0
+	  break;; 
+	   
+  * )    echo "Yes/No [yY/nN]";;
+	 
+  esac 
+done 
+
 case $type in 
    x86_64) 
-		folder
-		gccinstall
-		path=$(compilex86_64)
-		hugepages
-		runme $path
+		folder $default
+		gccinstall $default
+		path=$(compilex86_64 $default)
+		hugepages $default
+		runme $default $path
 		echo "If you like what I'm doing please donate :) VRM/VRC VJniF5bP9Acy7ce33yR4jRYSQ66Z4vGH8s"
 		exit 0;;
        
    armv71)
-		folder
-		path=$(compilearmv71)
-		runme $path
+		folder $default
+		path=$(compilearmv71 $default)
+		runme $default $path
 		echo "If you like what I'm doing please donate :) VRM/VRC VJniF5bP9Acy7ce33yR4jRYSQ66Z4vGH8s"
 		exit 0;;
 	  
    aarch64)
-		folder
-		path=$(compileaarch64)
-		runme $path
+		folder $default
+		path=$(compileaarch64 $default)
+		runme $default $path
 		echo "If you like what I'm doing please donate :) VRM/VRC VJniF5bP9Acy7ce33yR4jRYSQ66Z4vGH8s"
 		exit 0;;
 		
   * )   echo "Your CPU Architecture is not supported. Sorry"
 		exit 1;;
      
-  esac 
-done 
-
+esac 
