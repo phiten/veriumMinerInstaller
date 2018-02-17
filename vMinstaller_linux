@@ -342,6 +342,13 @@ poolcreds () {
 
 type=$(lscpu | grep -m 1 "Architecture:" | sed 's/[^=:]*[=:] //' | sed 's|[/ ]||g')
 
+case $1 in
+   --version|-v|version)
+		echo "2.0.0"
+		exit 0
+		;;
+esac
+
 while true 
 do 
   # (1) prompt user, and read command line argument 
