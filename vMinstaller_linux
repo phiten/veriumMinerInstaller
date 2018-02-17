@@ -11,6 +11,20 @@ if [ "$(id -u)" != "0" ]; then
 	exit 1
 fi
 
+
+pkgmanager () {
+
+	if [ "`apt-get --help 2> /dev/null`" ]; then
+		pkg=apt-get
+	elif [ "`yum --help 2> /dev/null`" ]; then
+		pkg=yum
+	elif [ "`apk --help 2> /dev/null`" ]; then
+		pkg=apk
+	fi
+
+}
+
+
 folder () { 
 
 	if [ $1 -eq 0 ]; then 
@@ -37,18 +51,34 @@ gccinstall () {
 	 
 	  # (2) handle the input we were given 
 	  case $answer in 
-	   [yY]* )  DEBIAN_FRONTEND=noninteractive apt-get -y -qq update
-				DEBIAN_FRONTEND=noninteractive apt-get -y -qq upgrade
-				DEBIAN_FRONTEND=noninteractive apt-get -y -qq install unzip flex make automake autoconf pkg-config
-				DEBIAN_FRONTEND=noninteractive wget https://github.com/gcc-mirror/gcc/archive/gcc-7_2_0-release.zip > /dev/null 2>&1
-				unzip gcc-7_2_0-release.zip > /dev/null 2>&1
-				cd gcc-gcc-7_2_0-release
-				./contrib/download_prerequisites > /dev/null 2>&1
-				mkdir build && cd build
-				../configure --enable-languages=c,c++ --disable-multilib > /dev/null 2>&1
-				make -j 8
-				make install
-				rm -rf gcc-7_2_0-release.zip gcc-gcc-7_2_0-release
+	   [yY]* )  
+			if [ "$pkg" = "apt-get" ]; then
+
+                                DEBIAN_FRONTEND=noninteractive apt-get -y -qq update > /dev/null 2>&1
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq upgrade > /dev/null 2>&1
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq install unzip flex make automake autoconf pkg-config > /dev/null 2>&1
+			
+			elif [ "$pkg" = "yum" ]; then
+	
+				yum update -y > /dev/null 2>&1
+                                yum install -y unzip bzip2 gcc flex make automake autoconf wget > /dev/null 2>&1
+
+			elif [ "$pkg" = "apk" ]; then
+	
+				echo "under construction"
+
+			fi
+
+                        wget https://github.com/gcc-mirror/gcc/archive/gcc-7_2_0-release.zip > /dev/null 2>&1
+			unzip gcc-7_2_0-release.zip > /dev/null 2>&1
+			cd gcc-gcc-7_2_0-release
+			./contrib/download_prerequisites > /dev/null 2>&1
+			mkdir build && cd build
+			../configure --enable-languages=c,c++ --disable-multilib > /dev/null 2>&1
+			make -j 8
+			make install
+			rm -rf gcc-7_2_0-release.zip gcc-gcc-7_2_0-release
+
 		  break;;
 		   
 	   [nN]* )
@@ -74,29 +104,62 @@ compilex86_64 () {
 
 	  # (2) handle the input we were given 
 	  case $answer in 
-	   [yY]* )  DEBIAN_FRONTEND=noninteractive apt-get -y -qq update > /dev/null 2>&1
+	   [yY]* )  
+			if [ "$pkg" = "apt-get" ]; then
+
+                                DEBIAN_FRONTEND=noninteractive apt-get -y -qq update > /dev/null 2>&1
 				DEBIAN_FRONTEND=noninteractive apt-get -y -qq upgrade > /dev/null 2>&1
 				DEBIAN_FRONTEND=noninteractive apt-get -y -qq install make git automake autoconf pkg-config libcurl4-openssl-dev libjansson-dev libssl-dev libgmp-dev zlib1g-dev > /dev/null 2>&1
-				git clone https://github.com/fireworm71/veriumMiner > /dev/null 2>&1
-				cd veriumMiner
-				./build.sh > /dev/null 2>&1
-				echo "./veriumMiner/cpuminer"
+
+			elif [ "$pkg" = "yum" ]; then
+
+				yum update -y > /dev/null 2>&1
+				yum install -y wget unzip make git gcc-c++ gcc automake autoconf libcurl-devel jansson-devel openssl-devel gmp-devel zlib-devel > /dev/null 2>&1
+
+			elif [ "$pkg" = "apk" ]; then
+
+				echo "under construction"
+
+			fi
+
+			git clone https://github.com/fireworm71/veriumMiner > /dev/null 2>&1
+			cd veriumMiner 
+			./build.sh > /dev/null 2>&1
+                        mv cpuminer ../
+
 		  break;;
 		   
-	   [nN]* )	DEBIAN_FRONTEND=noninteractive apt-get -y -qq update > /dev/null 2>&1
+	   [nN]* )	
+			if [ "$pkg" = "apt-get" ]; then
+
+			        DEBIAN_FRONTEND=noninteractive apt-get -y -qq update > /dev/null 2>&1
 				DEBIAN_FRONTEND=noninteractive apt-get -y -qq upgrade > /dev/null 2>&1
 				DEBIAN_FRONTEND=noninteractive apt-get -y -qq install libcurl4-openssl-dev libjansson-dev unzip > /dev/null 2>&1
-				DEBIAN_FRONTEND=noninteractive wget https://github.com/fireworm71/veriumMiner/releases/download/v1.4/cpuminer_1.4_linux_x64_O2_GCC7.zip > /dev/null 2>&1
-				unzip cpuminer_1.4_linux_x64_O2_GCC7.zip > /dev/null 2>&1
-				chmod +x cpuminer
-				rm -rf cpuminer_1.4_linux_x64_O2_GCC7.zip
-				echo "./cpuminer"
+
+			elif [ "$pkg" = "yum" ]; then
+
+				yum update -y > /dev/null 2>&1
+				yum install -y wget unzip git libcurl-devel jansson-devel openssl-devel gmp-devel zlib-devel > /dev/null 2>&1
+
+			elif [ "$pkg" = "apk" ]; then
+
+                                echo "under construction"
+
+                        fi
+
+			wget https://github.com/fireworm71/veriumMiner/releases/download/v1.4/cpuminer_1.4_linux_x64_O2_GCC7.zip > /dev/null 2>&1
+			unzip cpuminer_1.4_linux_x64_O2_GCC7.zip > /dev/null 2>&1
+			chmod +x cpuminer
+			rm -rf cpuminer_1.4_linux_x64_O2_GCC7.zip > /dev/null 2>&1
+
 		  break;; 
 		   
 	  * )    echo "Yes/No [yY/nN]";;
 		 
 	  esac 
 	done 
+  
+        echo "./cpuminer"
 
 }
 
@@ -205,7 +268,12 @@ hugepages () {
 
 				size=$((set*threads))
 
-				echo vm.nr_hugepages=$size >> /etc/sysctl.conf
+				if [ ! "`grep 'vm\.nr_hugepages=' /etc/sysctl.conf 2>/dev/null`" ]
+				then
+						echo vm.nr_hugepages=$size >> /etc/sysctl.conf
+				else
+						sed -i "s%vm\.nr_hugepages=.*%vm.nr_hugepages=$size%" /etc/sysctl.conf
+				fi
 
 				sysctl -p
 		  break;;
@@ -251,16 +319,35 @@ runme () {
 
 poolcreds () { 
 	
-			read -p "poolurl: " poolurl
+			read -p "poolurl: " poolurl 
 			read -p "poolport: " poolport
 			read -p "username: " username
 			read -p "workername: " workername
 			read -p "workerpass: " workerpass				
-			string="$1 -o stratum+tcp://$poolurl:$poolport -O $username.$workername:$workerpass"
-			echo $string
+			read -p "enable api port? Yes/No [yY/nN] " answer
+                        case $answer in
+			 [yY]* )
+					string="$1 -o stratum+tcp://$poolurl:$poolport -O $username.$workername:$workerpass --api-bind 0.0.0.0:4048"
+					;;
+
+			 [nN]* )
+					string="$1 -o stratum+tcp://$poolurl:$poolport -O $username.$workername:$workerpass"
+					;;
+
+  			 * )    echo "Yes/No [yY/nN]";;
+
+			esac
+			echo "$string"
 }
 
 type=$(lscpu | grep -m 1 "Architecture:" | sed 's/[^=:]*[=:] //' | sed 's|[/ ]||g')
+
+case $1 in
+   --version|-v|version)
+		echo "2.0.0"
+		exit 0
+		;;
+esac
 
 while true 
 do 
@@ -280,6 +367,8 @@ do
 	 
   esac 
 done 
+
+pkgmanager
 
 case $type in 
    x86_64) 
