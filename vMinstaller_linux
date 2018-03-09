@@ -32,7 +32,7 @@ folder () {
 	else
 		answer="miner"
 	fi
-	
+	workdir=$answer
 	mkdir $answer
 	cd $answer
 
@@ -125,7 +125,7 @@ compilex86_64 () {
 			git clone https://github.com/fireworm71/veriumMiner > /dev/null 2>&1
 			cd veriumMiner 
 			./build.sh > /dev/null 2>&1
-                        mv cpuminer ../
+                        mv cpuminer $workdir
 
 		  break;;
 		   
@@ -302,9 +302,9 @@ runme () {
 	  # (2) handle the input we were given 
 	  case $answer in
 	   [yY]* )  
-			poolcreds $2 > RunMe
-			chmod +x RunMe
-			echo "Finished installation. Use ./RunMe in your choosen directory to start mining."
+			poolcreds $2 > $workdir/RunMe
+			chmod a+x $workdir/RunMe
+			echo "Finished installation. Use ./RunMe in your chosen directory to start mining."
 		  break;;
 		   
 	   [nN]* )
