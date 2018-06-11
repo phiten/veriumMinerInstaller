@@ -54,14 +54,14 @@ gccinstall () {
 	   [yY]* )  
 			if [ "$pkg" = "apt-get" ]; then
 
-                                DEBIAN_FRONTEND=noninteractive apt-get -y -qq update > /dev/null 2>&1
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq update > /dev/null 2>&1
 				DEBIAN_FRONTEND=noninteractive apt-get -y -qq upgrade > /dev/null 2>&1
 				DEBIAN_FRONTEND=noninteractive apt-get -y -qq install unzip flex make automake autoconf pkg-config > /dev/null 2>&1
 			
 			elif [ "$pkg" = "yum" ]; then
 	
 				yum update -y > /dev/null 2>&1
-                                yum install -y unzip bzip2 gcc flex make automake autoconf wget > /dev/null 2>&1
+				yum install -y unzip bzip2 gcc flex make automake autoconf wget > /dev/null 2>&1
 
 			elif [ "$pkg" = "apk" ]; then
 	
@@ -69,15 +69,16 @@ gccinstall () {
 
 			fi
 
-                        wget https://github.com/gcc-mirror/gcc/archive/gcc-7_2_0-release.zip > /dev/null 2>&1
-			unzip gcc-7_2_0-release.zip > /dev/null 2>&1
-			cd gcc-gcc-7_2_0-release
+			wget https://github.com/gcc-mirror/gcc/archive/gcc-8_1_0-release.zip > /dev/null 2>&1
+			unzip gcc-8_1_0-release.zip > /dev/null 2>&1
+			cd gcc-gcc-8_1_0-release
 			./contrib/download_prerequisites > /dev/null 2>&1
 			mkdir build && cd build
 			../configure --enable-languages=c,c++ --disable-multilib > /dev/null 2>&1
 			make -j 8
 			make install
-			rm -rf gcc-7_2_0-release.zip gcc-gcc-7_2_0-release
+			cd ../../
+			rm -rf gcc-8_1_0-release.zip gcc-gcc-8_1_0-release
 
 		  break;;
 		   
@@ -107,7 +108,7 @@ compilex86_64 () {
 	   [yY]* )  
 			if [ "$pkg" = "apt-get" ]; then
 
-                                DEBIAN_FRONTEND=noninteractive apt-get -y -qq update > /dev/null 2>&1
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq update > /dev/null 2>&1
 				DEBIAN_FRONTEND=noninteractive apt-get -y -qq upgrade > /dev/null 2>&1
 				DEBIAN_FRONTEND=noninteractive apt-get -y -qq install make git automake autoconf pkg-config libcurl4-openssl-dev libjansson-dev libssl-dev libgmp-dev zlib1g-dev > /dev/null 2>&1
 
@@ -132,7 +133,7 @@ compilex86_64 () {
 	   [nN]* )	
 			if [ "$pkg" = "apt-get" ]; then
 
-			        DEBIAN_FRONTEND=noninteractive apt-get -y -qq update > /dev/null 2>&1
+				DEBIAN_FRONTEND=noninteractive apt-get -y -qq update > /dev/null 2>&1
 				DEBIAN_FRONTEND=noninteractive apt-get -y -qq upgrade > /dev/null 2>&1
 				DEBIAN_FRONTEND=noninteractive apt-get -y -qq install libcurl4-openssl-dev libjansson-dev unzip > /dev/null 2>&1
 
@@ -143,9 +144,9 @@ compilex86_64 () {
 
 			elif [ "$pkg" = "apk" ]; then
 
-                                echo "under construction"
+				echo "under construction"
 
-                        fi
+			fi
 
 			wget https://github.com/fireworm71/veriumMiner/releases/download/v1.4/cpuminer_1.4_linux_x64_O2_GCC7.zip > /dev/null 2>&1
 			unzip cpuminer_1.4_linux_x64_O2_GCC7.zip > /dev/null 2>&1
