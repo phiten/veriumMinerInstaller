@@ -4,6 +4,7 @@
 #2018-01-02
 #donations: VRM/VRC VJniF5bP9Acy7ce33yR4jRYSQ66Z4vGH8s
 
+# Edit 2020-01-30: Replaced GCC source since it was gone from Github
 #GNU General Public License v3.0 see LICENSE
 
 if [ "$(id -u)" != "0" ]; then
@@ -69,9 +70,9 @@ gccinstall () {
 
 			fi
 
-			wget https://github.com/gcc-mirror/gcc/archive/gcc-8_1_0-release.zip > /dev/null 2>&1
-			unzip gcc-8_1_0-release.zip > /dev/null 2>&1
-			cd gcc-gcc-8_1_0-release
+			wget https://ftp.gnu.org/gnu/gcc/gcc-8.1.0/gcc-8.1.0.tar.gz > /dev/null 2>&1
+			tar xzf gcc-8.1.0.tar.gz > /dev/null 2>&1; mv gcc-8.1.0 gcc-8_1_0-release
+			cd gcc-8_1_0-release
 			./contrib/download_prerequisites > /dev/null 2>&1
 			mkdir build && cd build
 			../configure --enable-languages=c,c++ --disable-multilib > /dev/null 2>&1
